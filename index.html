@@ -1,57 +1,373 @@
-<div class="header">
-    <div class="header-left">
-        <div class="company-title">VDM Holdings Limited</div>
-        <div style="font-size: 18px;">Quotation</div>
-    </div>
-    <div class="header-right no-print">
-        <button onclick="window.print()" class="button">Print/Save PDF</button>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDM Holdings Limited - Quotation</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .company-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .quotation-title {
+            font-size: 18px;
+            color: #4b5563;
+        }
+        .button {
+            padding: 8px 16px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #1d4ed8;
+        }
+        .remove-button {
+            padding: 4px 8px;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .remove-button:hover {
+            background-color: #b91c1c;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+        .field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #374151;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+            color: #374151;
+        }
+        .amount-column {
+            text-align: right;
+        }
+        td input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        td input[type="number"] {
+            text-align: right;
+        }
+        .totals {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 4px 12px;
+            color: #374151;
+        }
+        .total-row.final {
+            font-weight: bold;
+            font-size: 16px;
+            border-top: 2px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+            color: #1f2937;
+        }
+        .remarks {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .remarks textarea {
+            min-height: 100px;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .signature-section {
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: none;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="company-title">VDM Holdings Limited</div>
+                <div class="quotation-title">Quotation</div>
+            </div>
+            <div class="header-right no-print">
+                <button onclick="window.print()" class="button">Print/Save PDF</button>
+            </div>
+        </div>
 
-<div class="grid">
-    <div class="field">
-        <label>Date</label>
-        <input type="date" id="currentDate">
-    </div>
-    <div class="field">
-        <label>Quotation #</label>
-        <input type="text" id="quotationNumber">
-    </div>
-</div>
+        <div class="grid">
+            <div class="field">
+                <label>Date</label>
+                <input type="date" id="currentDate">
+            </div>
+            <div class="field">
+                <label>Quotation #</label>
+                <input type="text" id="quotationNumber" readonly>
+            </div>
+        </div>
 
-<div class="grid">
-    <div class="field">
-        <label>Customer Name</label>
-        <input type="text" value="">
+        <div class="grid">
+            <div class="field">
+                <label>Customer Name</label>
+                <input type="text">
+            </div>
+            <div class="field">
+                <label>Tax ID</label>
+                <input type="text">
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="field">
+                <label>Contact Person</label>
+                <input type="text">
+            </div>
+            <div class="field">
+                <label>Contact Phone</label>
+                <input type="tel">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input type="email">
+        </div>
+
+        <div class="field">
+            <label>Address</label>
+            <input type="text">
+        </div>
+
+        <table id="itemsTable">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="amount-column">Quantity</th>
+                    <th class="amount-column">Unit Price</th>
+                    <th class="amount-column">Amount</th>
+                    <th class="no-print" style="width: 60px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="description-input"></td>
+                    <td><input type="number" class="quantity-input" min="0" step="1"></td>
+                    <td><input type="number" class="price-input" min="0" step="0.01"></td>
+                    <td class="amount-column amount-display">0.00 USD</td>
+                    <td class="no-print">
+                        <button class="remove-button" onclick="removeRow(this)">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button onclick="addNewRow()" class="button no-print" style="margin-bottom: 20px;">Add Item</button>
+
+        <div class="totals">
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span class="subtotal-display">0.00 USD</span>
+            </div>
+            <div class="total-row final">
+                <span>Total:</span>
+                <span class="total-display">0.00 USD</span>
+            </div>
+        </div>
+
+        <div class="remarks">
+            <label>Terms and Conditions</label>
+            <textarea id="remarks-text" readonly class="remarks-textarea">1. For any issues with product quality or quantity discrepancy, please submit a request within 30 days of receiving the goods.
+
+2. Upon acceptance, please e-mail the signed quotation back to us.
+
+3. Prices are subject to change based on market conditions and availability of materials.
+
+4. Lead times are estimated and may vary based on material availability and order volume.
+
+5. 50% deposit is required to initiate the order processing.
+
+6. All prices are in USD and exclude shipping costs unless specifically mentioned.
+
+7. This quotation is valid for 30 days from the date of issue.</textarea>
+        </div>
+
+        <div class="signature-section">
+            <div class="grid">
+                <div class="field">
+                    <label>Customer Signature</label>
+                    <div style="border: 1px solid #ddd; height: 100px; border-radius: 4px; margin-top: 8px;"></div>
+                    <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+                        <span>Name</span>
+                        <span>Date</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="company-info" style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; line-height: 1.8;">
+            <div style="font-weight: 600;">VDM Holdings Limited</div>
+            <div>[Your Address]</div>
+            <div>TEL: [Your Phone Number]</div>
+            <div>Email: [Your Email]</div>
+        </div>
     </div>
-    <div class="field">
-        <label>Tax ID</label>
-        <input type="text" value="">
-    </div>
-</div>
 
-<div class="field">
-    <label>Address</label>
-    <input type="text" value="">
-</div>
+    <script>
+        // Initialize the page
+        window.onload = function() {
+            // Set current date
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('currentDate').value = formattedDate;
+            
+            // Generate quotation number
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const randomNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+            const quotationNum = `QT${year}${month}${day}-${randomNum}`;
+            document.getElementById('quotationNumber').value = quotationNum;
 
-<script>
-    // Add this at the beginning of your script section
-    // Set current date and generate quotation number
-    window.onload = function() {
-        // Set current date
-        const today = new Date();
-        const formattedDate = today.toISOString().split('T')[0];
-        document.getElementById('currentDate').value = formattedDate;
-        
-        // Generate quotation number based on current date
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const randomNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-        const quotationNum = `QT${year}${month}${day}-${randomNum}`;
-        document.getElementById('quotationNumber').value = quotationNum;
-    }
+            // Initialize existing rows
+            document.querySelectorAll('#itemsTable tbody tr').forEach(row => {
+                attachRowListeners(row);
+            });
+        }
 
-    // ... rest of existing script ...
-</script> 
+        function addNewRow() {
+            const tbody = document.querySelector('#itemsTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" class="description-input"></td>
+                <td><input type="number" class="quantity-input" min="0" step="1"></td>
+                <td><input type="number" class="price-input" min="0" step="0.01"></td>
+                <td class="amount-column amount-display">0.00 USD</td>
+                <td class="no-print">
+                    <button class="remove-button" onclick="removeRow(this)">Remove</button>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            attachRowListeners(newRow);
+        }
+
+        function removeRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+            updateTotals();
+        }
+
+        function attachRowListeners(row) {
+            const qtyInput = row.querySelector('.quantity-input');
+            const priceInput = row.querySelector('.price-input');
+
+            qtyInput.addEventListener('input', () => updateRow(row));
+            priceInput.addEventListener('input', () => updateRow(row));
+        }
+
+        function updateRow(row) {
+            const qty = parseFloat(row.querySelector('.quantity-input').value) || 0;
+            const price = parseFloat(row.querySelector('.price-input').value) || 0;
+            const amount = qty * price;
+            row.querySelector('.amount-display').textContent = amount.toFixed(2) + ' USD';
+            updateTotals();
+        }
+
+        function updateTotals() {
+            const amounts = Array.from(document.querySelectorAll('.amount-display'))
+                .map(cell => parseFloat(cell.textContent) || 0);
+            
+            const subtotal = amounts.reduce((sum, amount) => sum + amount, 0);
+            const total = subtotal;
+
+            document.querySelector('.subtotal-display').textContent = subtotal.toFixed(2) + ' USD';
+            document.querySelector('.total-display').textContent = total.toFixed(2) + ' USD';
+        }
+    </script>
+</body>
+</html> 
